@@ -1,19 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <form @submit="guardar">
+      <label for="name">
+        Nombre:
+        <input id="name" name="name" />
+      </label>
+      <input type="submit" value="Guardar" />
+    </form>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  components: {},
+  methods: {
+    async guardar(event) {
+      console.log(event);
+      event.preventDefault();
+      alert('vamos a guardar');
+      const data = {
+        nombre: 'Carlos',
+      };
+      const res = await axios.post('http://127.0.0.1:5000/contactos', data);
+      alert(JSON.stringify(res.data));
+    },
+  },
+};
 </script>
 
 <style>
