@@ -1,32 +1,71 @@
 <template>
   <div id="app">
-    <form @submit="guardar">
-      <label for="name">
-        Nombre:
-        <input id="name" name="name" />
-      </label>
-      <input type="submit" value="Guardar" />
-    </form>
+    <h1>App (Actual {{ preguntaActual + 1 }})</h1>
+    <Card
+      v-for="pregunta in preguntas"
+      :key="pregunta.numero"
+      :pregunta="pregunta"
+      :activa="preguntaActual"
+      @onRespuesta="irASiguiente"
+    />
+    <button type="button" @click="reiniciar">Reiniciar</button>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import Card from './components/Card.vue';
 
 export default {
   name: 'App',
-  components: {},
+  components: {Card},
+  data() {
+    return {
+      preguntaActual: 1,
+      preguntas: [
+        {
+          numero: 1,
+          titulo: 'titulo 1',
+          respuesta: 'A',
+          activa: false,
+          respondida: false,
+        },
+        {
+          numero: 2,
+          titulo: 'titulo 2',
+          respuesta: 'B',
+          activa: false,
+          respondida: false,
+        },
+        {
+          numero: 3,
+          titulo: 'titulo 3',
+          respuesta: 'B',
+          activa: false,
+          respondida: false,
+        },
+        {
+          numero: 4,
+          titulo: 'titulo 4',
+          respuesta: 'B',
+          activa: false,
+          respondida: false,
+        },
+      ],
+    };
+  },
   methods: {
-    async guardar(event) {
-      console.log(event);
-      event.preventDefault();
-      alert('vamos a guardar');
-      const data = {
-        nombre: 'Carlos',
-      };
-      const res = await axios.post('http://127.0.0.1:5000/contactos', data);
-      alert(JSON.stringify(res.data));
+    irASiguiente() {
+      if (this.preguntaActual > this.preguntas.length) {
+        this.preguntaActual = this.preguntas.length;
+      }
+      if (this.preguntaActual === this.preguntas.length) {
+        alert("Bien! terminaste");
+      }
+      this.preguntaActual++;
     },
+    reiniciar() {
+      this.preguntaActual = 1;
+    }
   },
 };
 </script>
